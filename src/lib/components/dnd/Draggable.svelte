@@ -68,14 +68,14 @@
 				$draggablesEl[index]
 			];
 		}
-		if (passedPrevElement) {
-			[$draggables[index], $draggables[index - 1]] = [$draggables[index - 1], $draggables[index]];
+		// if (passedPrevElement) {
+		// 	[$draggables[index], $draggables[index - 1]] = [$draggables[index - 1], $draggables[index]];
 
-			[$draggablesEl[index], $draggablesEl[index - 1]] = [
-				$draggablesEl[index - 1],
-				$draggablesEl[index]
-			];
-		}
+		// 	[$draggablesEl[index], $draggablesEl[index - 1]] = [
+		// 		$draggablesEl[index - 1],
+		// 		$draggablesEl[index]
+		// 	];
+		// }
 
 		coords.update(($coords) => ({
 			x: $coords.x + e.detail.dx,
