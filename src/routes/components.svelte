@@ -1,6 +1,7 @@
 <script>
 	import AvatarGroup from '$lib/components/avatar/AvatarGroup.svelte';
 	import DragAndDrop from '$lib/components/dnd/index.svelte';
+	import Select from '$lib/components/select/Select.svelte';
 	import Toggle from '$lib/components/toggle/Toggle.svelte';
 
 	let checked = false;
@@ -21,4 +22,5 @@
 	<Toggle {checked} />
 	<AvatarGroup {members} />
 	<DragAndDrop />
+	<Select />
 </div>
