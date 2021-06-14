@@ -48,18 +48,36 @@
 		coords.stiffness = coords.damping = 1;
 	}
 
+	// function getElCenter(element) {
+	//   const {x, y} = element
+	// }
+
+	const isOverlapRect = (rect1: DOMRect, rect2: DOMRect) =>
+		!(
+			rect1.right < rect2.left ||
+			rect1.left > rect2.right ||
+			rect1.bottom < rect2.top ||
+			rect1.top > rect2.bottom
+		);
+
 	function handlePanMove(e) {
 		const index = $draggablesEl.indexOf(currentEl);
 		const nextElement = $draggablesEl[index + 1] ?? null;
 		const prevElement = $draggablesEl[index - 1] ?? null;
 
 		const { y } = currentEl.getBoundingClientRect();
-		const passedNextElement =
-			nextElement && y > nextElement.offsetTop - nextElement.offsetHeight / 2;
-		const passedPrevElement =
-			prevElement && y < prevElement.offsetTop + prevElement.offsetHeight / 2;
+		const currentElRect = currentEl.getBoundingClientRect();
+		const nextElRect = nextElement.getBoundingClientRect();
+		const prevElRect = nextElement.getBoundingClientRect();
 
-		console.log(y);
+		const overlapNext = isOverlapRect(currentElRect, nextElRect);
+		const overlapPrev = isOverlapRect(currentElRect, prevElRect);
+
+		const passedNextElement = nextElement && currentElRect.y > nextElRect.y - nextElRect.height / 2;
+		const passedPrevElement =
+			prevElement && overlapPrev && currentElRect.y < prevElRect.y + prevElRect.height / 2;
+
+		// console.log(y);
 		if (passedNextElement) {
 			[$draggables[index], $draggables[index + 1]] = [$draggables[index + 1], $draggables[index]];
 
@@ -67,21 +85,33 @@
 				$draggablesEl[index + 1],
 				$draggablesEl[index]
 			];
-		}
-		// if (passedPrevElement) {
-		// 	[$draggables[index], $draggables[index - 1]] = [$draggables[index - 1], $draggables[index]];
+			// coords.set({ x: 0, y: 0 });
 
-		// 	[$draggablesEl[index], $draggablesEl[index - 1]] = [
-		// 		$draggablesEl[index - 1],
-		// 		$draggablesEl[index]
-		// 	];
-		// }
+			// console.log(
+			// 	'next element id:',
+			// 	nextElement.getAttribute('data-draggable-id'),
+			// 	' Passed next element',
+			// 	passedNextElement,
+			// 	'next offset top',
+			// 	nextElement.offsetTop
+			// );
+			// console.log(`swap ${index} with ${index + 1}`);
+		} else if (passedPrevElement) {
+			[$draggables[index], $draggables[index - 1]] = [$draggables[index - 1], $draggables[index]];
+
+			[$draggablesEl[index], $draggablesEl[index - 1]] = [
+				$draggablesEl[index - 1],
+				$draggablesEl[index]
+			];
+			coords.set({ x: 0, y: 0 });
+		}
 
 		coords.update(($coords) => ({
 			x: $coords.x + e.detail.dx,
 			y: $coords.y + e.detail.dy
 		}));
 	}
+	$: console.log($coords.y);
 
 	function handlePanEnd() {
 		coords.stiffness = 0.2;
@@ -122,7 +152,7 @@
 	</button>
 
 	<div class="flex-grow ml-2">
-		{index + 1}
+		<!-- {index + 1} -->
 		<slot />
 	</div>
 	<button class="delete" on:click={remove}>delete</button>
