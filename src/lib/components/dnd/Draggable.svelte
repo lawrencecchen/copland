@@ -1,3 +1,12 @@
+<script context="module" lang="ts">
+	declare namespace svelte.JSX {
+		interface HTMLAttributes<T> {
+			onpanmove?: (event: CustomEvent<number> & { target: EventTarget & T }) => any;
+		}
+	}
+
+</script>
+
 <script lang="ts">
 	import { pannable } from './pannable';
 	import { quintOut } from 'svelte/easing';
