@@ -3,6 +3,7 @@
 	import DragAndDrop from '$lib/components/dnd/index.svelte';
 	import Editable from '$lib/components/editable/Editable.svelte';
 	import Select from '$lib/components/select/Select.svelte';
+	import Toaster from '$lib/components/toast/Toaster.svelte';
 	import Toggle from '$lib/components/toggle/Toggle.svelte';
 
 	let checked = false;
@@ -27,4 +28,5 @@
 	<AvatarGroup {members} /> -->
 	<DragAndDrop />
 	<!-- <Select /> -->
+	<Toaster />
 </div>
